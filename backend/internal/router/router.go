@@ -19,6 +19,7 @@ type Dependencies struct {
 	Monitoring *service.MonitoringService
 	Alerts     *service.AlertService
 	Control    *service.ControlService
+	Schedules  *service.ScheduleService
 	Reports    *service.ReportService
 	Hub        *ws.Hub
 }
@@ -33,6 +34,7 @@ func New(d Dependencies) *gin.Engine {
 	monitoring := handler.NewMonitoringHandler(d.Monitoring, v)
 	alerts := handler.NewAlertHandler(d.Alerts)
 	devices := handler.NewDeviceHandler(d.Control, v)
+	schedules := handler.NewScheduleHandler(d.Schedules, v)
 	reports := handler.NewReportHandler(d.Reports)
 	r.GET(constants.HealthPath, func(c *gin.Context) { handler.Success(c, gin.H{"status": "healthy"}) })
 	r.GET(constants.WebSocketPath, func(c *gin.Context) { d.Hub.Handle(c.Writer, c.Request) })
@@ -44,6 +46,7 @@ func New(d Dependencies) *gin.Engine {
 	api.GET("/readings/history", monitoring.History)
 	api.GET("/alerts", alerts.List)
 	api.GET("/devices", devices.List)
+	api.GET("/schedules", schedules.List)
 	api.GET("/reports/environment", reports.Get)
 	secured := api.Group("")
 	secured.Use(middleware.Auth(d.Auth))
@@ -54,7 +57,8 @@ func New(d Dependencies) *gin.Engine {
 	secured.PUT("/sensors/:id/threshold", monitoring.Threshold)
 	secured.PATCH("/alerts/:id/handle", alerts.Handle)
 	secured.PATCH("/devices/:id/toggle", devices.Toggle)
-	secured.POST("/schedules", devices.Schedule)
-	secured.GET("/devices/:id/schedules", devices.Schedules)
+	secured.POST("/schedules", schedules.Create)
+	secured.PATCH("/schedules/:id/status", schedules.UpdateStatus)
+	secured.GET("/devices/:id/schedules", schedules.ListByDevice)
 	return r
 }

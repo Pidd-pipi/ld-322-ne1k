@@ -29,6 +29,10 @@ type DeviceToggleRequest struct {
 }
 type ScheduleRequest struct {
 	DeviceID uint   `json:"deviceId" validate:"required"`
-	Cron     string `json:"cron" validate:"required,max=50"`
+	Hour     int    `json:"hour" validate:"gte=0,lte=23"`
+	Minute   int    `json:"minute" validate:"gte=0,lte=59"`
 	Action   string `json:"action" validate:"required,oneof=on off"`
+}
+type ScheduleStatusRequest struct {
+	Enabled *bool `json:"enabled" validate:"required"`
 }

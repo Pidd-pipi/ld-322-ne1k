@@ -19,13 +19,9 @@ func NewControlService(r *repository.DeviceRepository, l *slog.Logger, h *ws.Hub
 }
 func (s *ControlService) List(gid uint) ([]model.Device, error) { return s.repo.List(gid) }
 func (s *ControlService) Toggle(id uint, status string) (*model.Device, error) {
-	d, e := s.repo.Toggle(id, status)
+	d, e := s.repo.Toggle(id, status, constants.OperatorAdmin)
 	if e == nil {
 		s.hub.Broadcast(constants.EventDevice, d)
 	}
 	return d, e
-}
-func (s *ControlService) Schedule(row *model.Schedule) error { return s.repo.CreateSchedule(row) }
-func (s *ControlService) Schedules(id uint) ([]model.Schedule, error) {
-	return s.repo.ListSchedules(id)
 }

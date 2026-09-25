@@ -17,14 +17,6 @@ type DeviceAction struct {
 	Operator  string    `gorm:"type:varchar(100)" json:"operator"`
 	CreatedAt time.Time `json:"createdAt"`
 }
-type Schedule struct {
-	ID        uint      `gorm:"primaryKey" json:"id"`
-	DeviceID  uint      `gorm:"index" json:"deviceId"`
-	Cron      string    `gorm:"type:varchar(100)" json:"cron"`
-	Action    string    `gorm:"type:varchar(32)" json:"action"`
-	Enabled   bool      `json:"enabled"`
-	CreatedAt time.Time `json:"createdAt"`
-}
 type User struct {
 	ID           uint   `gorm:"primaryKey" json:"id"`
 	Username     string `gorm:"type:varchar(100);uniqueIndex" json:"username"`

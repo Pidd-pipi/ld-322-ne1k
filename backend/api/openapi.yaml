@@ -12,3 +12,26 @@ paths:
     post: {summary: Ingest a sensor reading, responses: {'201': {description: Created}}}
   /api/v1/alerts:
     get: {summary: List alerts, responses: {'200': {description: OK}}}
+  /api/v1/schedules:
+    get:
+      summary: List device schedules of a greenhouse
+      parameters:
+        - {name: greenhouse_id, in: query, required: true, schema: {type: integer}}
+      responses: {'200': {description: OK}}
+    post:
+      summary: Create a daily device schedule (deviceId, hour, minute, action)
+      responses:
+        '201': {description: Created}
+        '409': {description: An enabled schedule already exists for the device at that time; the original is kept}
+  /api/v1/schedules/{id}/status:
+    patch:
+      summary: Enable or disable a schedule
+      parameters:
+        - {name: id, in: path, required: true, schema: {type: integer}}
+      responses: {'200': {description: OK}}
+  /api/v1/devices/{id}/schedules:
+    get:
+      summary: List schedules of one device
+      parameters:
+        - {name: id, in: path, required: true, schema: {type: integer}}
+      responses: {'200': {description: OK}}

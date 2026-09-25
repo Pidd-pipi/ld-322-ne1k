@@ -3,7 +3,6 @@ package handler
 import (
 	"github.com/cygreenenv/greenhouse-panel/internal/dto"
 	apperrors "github.com/cygreenenv/greenhouse-panel/internal/errors"
-	"github.com/cygreenenv/greenhouse-panel/internal/model"
 	"github.com/cygreenenv/greenhouse-panel/internal/service"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -45,29 +44,4 @@ func (h *DeviceHandler) Toggle(c *gin.Context) {
 		return
 	}
 	Success(c, row)
-}
-func (h *DeviceHandler) Schedule(c *gin.Context) {
-	var req dto.ScheduleRequest
-	if err := c.ShouldBindJSON(&req); err != nil || h.validator.Struct(req) != nil {
-		Fail(c, apperrors.ErrValidation)
-		return
-	}
-	row := &model.Schedule{DeviceID: req.DeviceID, Cron: req.Cron, Action: req.Action, Enabled: true}
-	if err := h.service.Schedule(row); err != nil {
-		Fail(c, err)
-		return
-	}
-	Created(c, row)
-}
-func (h *DeviceHandler) Schedules(c *gin.Context) {
-	id, ok := parseID(c)
-	if !ok {
-		return
-	}
-	rows, err := h.service.Schedules(id)
-	if err != nil {
-		Fail(c, err)
-		return
-	}
-	Success(c, rows)
 }
