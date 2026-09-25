@@ -55,6 +55,7 @@ func New(d Dependencies) *gin.Engine {
 	secured.PATCH("/alerts/:id/handle", alerts.Handle)
 	secured.PATCH("/devices/:id/toggle", devices.Toggle)
 	secured.POST("/schedules", devices.Schedule)
+	secured.PATCH("/schedules/:id", devices.UpdateSchedule)
 	secured.GET("/devices/:id/schedules", devices.Schedules)
 	return r
 }

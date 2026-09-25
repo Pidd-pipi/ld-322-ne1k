@@ -12,3 +12,9 @@ paths:
     post: {summary: Ingest a sensor reading, responses: {'201': {description: Created}}}
   /api/v1/alerts:
     get: {summary: List alerts, responses: {'200': {description: OK}}}
+  /api/v1/schedules:
+    post: {summary: Create a daily device schedule (deviceId, hour, minute, action); 409 when an enabled schedule exists at the same device and time, responses: {'201': {description: Created}, '409': {description: Conflict}}}
+  /api/v1/schedules/{id}:
+    patch: {summary: Enable or disable a schedule, responses: {'200': {description: OK}}}
+  /api/v1/devices/{id}/schedules:
+    get: {summary: List schedules of a device, responses: {'200': {description: OK}}}

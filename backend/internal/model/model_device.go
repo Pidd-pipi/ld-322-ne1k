@@ -18,12 +18,15 @@ type DeviceAction struct {
 	CreatedAt time.Time `json:"createdAt"`
 }
 type Schedule struct {
-	ID        uint      `gorm:"primaryKey" json:"id"`
-	DeviceID  uint      `gorm:"index" json:"deviceId"`
-	Cron      string    `gorm:"type:varchar(100)" json:"cron"`
-	Action    string    `gorm:"type:varchar(32)" json:"action"`
-	Enabled   bool      `json:"enabled"`
-	CreatedAt time.Time `json:"createdAt"`
+	ID        uint       `gorm:"primaryKey" json:"id"`
+	DeviceID  uint       `gorm:"index" json:"deviceId"`
+	Hour      int        `json:"hour"`
+	Minute    int        `json:"minute"`
+	Action    string     `gorm:"type:varchar(32)" json:"action"`
+	Enabled   bool       `json:"enabled"`
+	LastRunAt *time.Time `json:"lastRunAt"`
+	CreatedAt time.Time  `json:"createdAt"`
+	UpdatedAt time.Time  `json:"updatedAt"`
 }
 type User struct {
 	ID           uint   `gorm:"primaryKey" json:"id"`

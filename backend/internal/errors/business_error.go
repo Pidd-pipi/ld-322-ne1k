@@ -14,8 +14,9 @@ func New(code int, message string, status int) *BusinessError {
 }
 
 var (
-	ErrNotFound     = New(40401, "资源不存在", http.StatusNotFound)
-	ErrValidation   = New(40001, "请求参数不合法", http.StatusBadRequest)
-	ErrUnauthorized = New(40101, "认证失败", http.StatusUnauthorized)
-	ErrInternal     = New(50001, "服务器内部错误", http.StatusInternalServerError)
+	ErrNotFound         = New(40401, "资源不存在", http.StatusNotFound)
+	ErrValidation       = New(40001, "请求参数不合法", http.StatusBadRequest)
+	ErrUnauthorized     = New(40101, "认证失败", http.StatusUnauthorized)
+	ErrInternal         = New(50001, "服务器内部错误", http.StatusInternalServerError)
+	ErrScheduleConflict = New(40901, "该设备在同一时刻已存在启用的定时任务，原任务已保留", http.StatusConflict)
 )
